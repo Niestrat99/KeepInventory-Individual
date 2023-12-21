@@ -15,6 +15,7 @@ public class Config {
     public static FileConfiguration config;
 
     public static List<String> deathCauses = new ArrayList<>();
+    public static List<String> worldblacklist = new ArrayList<>();
 
     public static void initConfigFile() {
         configFile = new File(KeepInvIndividual.get().getDataFolder(), "config.yml");
@@ -36,6 +37,10 @@ public class Config {
                 "https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html",
                 "----------------------------------------------------------------------------------------"
         )));
+        //World Blacklist
+        config.addDefault("world-blacklist.enabled", false);
+        config.addDefault("world-blacklist.blackist", new ArrayList<>());
+        //DeathCause Blacklist
         config.addDefault("deathcause-blacklist.enabled", false);
         config.addDefault("deathcause-blacklist.blacklist", new ArrayList<>());
         //MySQL
@@ -51,6 +56,7 @@ public class Config {
     public static void save() throws IOException {
         config.options().copyDefaults(true);
         deathCauses.addAll(config.getStringList("deathcause-blacklist.blacklist"));
+        worldblacklist.addAll(config.getStringList("world-blacklist.blacklist"));
         config.save(configFile);
     }
 

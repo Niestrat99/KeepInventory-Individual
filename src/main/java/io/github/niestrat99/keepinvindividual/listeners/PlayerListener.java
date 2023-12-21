@@ -19,30 +19,14 @@ public class PlayerListener implements Listener {
         Player player = e.getPlayer();
         if (KeepInvIndividual.mySqlEnabled) {
             if (KeepInvSQL.isInList(player)) {
-                if (Config.config.getBoolean("deathcause-blacklist.enabled")) {
-                    if (player.getLastDamageCause() != null) {
-                        if (!Config.config.getStringList("deathcause-blacklist.blacklist").contains(Objects.requireNonNull(player.getLastDamageCause()).getCause().toString())) {
-                            e.setKeepInventory(true);
-                            e.getDrops().clear();
-                        } else {
-                            e.setKeepInventory(false);
-                        }
-                    }
-                } else {
+                if (checkForConfigStuff(player)) {
                     e.setKeepInventory(true);
                     e.getDrops().clear();
                 }
             }
         } else {
             if (KeepInvLocal.getUniqueID(player)) {
-                if (Config.config.getBoolean("deathcause-blacklist.enabled")) {
-                    if (player.getLastDamageCause() != null) {
-                        if (!Config.config.getStringList("deathcause-blacklist.blacklist").contains(Objects.requireNonNull(player.getLastDamageCause()).getCause().toString())) {
-                            e.setKeepInventory(true);
-                            e.getDrops().clear();
-                        }
-                    }
-                } else {
+                if (checkForConfigStuff(player)) {
                     e.setKeepInventory(true);
                     e.getDrops().clear();
                 }
@@ -53,5 +37,16 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Bukkit.getScheduler().runTaskAsynchronously(KeepInvIndividual.get(), () -> KeepInvSQL.storeUniqueID(e.getPlayer()));
+    }
+
+    // Functions
+    public static boolean checkForConfigStuff(Player player) {
+        if (Config.config.getBoolean("world-blacklist.blacklist.enabled") && Config.config.getStringList("world-blacklist.blacklist").contains(player.getWorld().getName())) {
+            return false;
+        }
+        if (player.getLastDamageCause() != null && Config.config.getBoolean("deathcause-blacklist.enabled") && Config.config.getStringList("deathcause-blacklist.blackist").contains(player.getLastDamageCause().getCause().toString())) {
+            return false;
+        }
+        return true;
     }
 }
