@@ -6,6 +6,7 @@ import io.github.niestrat99.keepinvindividual.configuration.KeepInvLocal;
 import io.github.niestrat99.keepinvindividual.configuration.KeepInvSQL;
 import io.github.niestrat99.keepinvindividual.configuration.Messages;
 import io.github.niestrat99.keepinvindividual.listeners.PlayerListener;
+import io.github.niestrat99.keepinvindividual.utilities.CacheList;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -75,6 +76,10 @@ public class KeepInvIndividual extends JavaPlugin {
         } else {
             getLogger().info(plTitle + "MySQL disabled, moving on to local storage instead.");
         }
+
+        // Cache Build
+        getLogger().info(plTitle + "Building cache");
+        CacheList.buildCache();
 
         // When everything's done
         getLogger().info(plTitle + "And we're up!");

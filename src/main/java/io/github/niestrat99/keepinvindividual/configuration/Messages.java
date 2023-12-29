@@ -32,6 +32,9 @@ public class Messages {
         messages.addDefault("error.already-enabled.other", "&cIt is already enabled for &e{player} &c.");
         messages.addDefault("error.already-disabled.self", "&cIt is already disabled for you.");
         messages.addDefault("error.already-disabled.other","&cIt is already disabled for &e{player}");
+        messages.addDefault("error.empty-list", "&cThe list is empty.");
+        messages.addDefault("error.must-be-number", "&cThe argument must be a number!");
+        messages.addDefault("error.page-out-of-bounds", "&cThe list only goes up to {number} pages.");
         save();
     }
 

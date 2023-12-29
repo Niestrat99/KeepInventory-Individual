@@ -14,6 +14,15 @@ permissions:
   ki.admin.cmd.reload:
     default: op
 
+  ki.admin.cmd.list:
+    default: op
+
+  ki.admin.cmd.help:
+    default: op
+
+  ki.keepxp:
+    default: op
+
 commands:
   keepinventory:
     description: Used to enable KeepInventory for you, another player or to reload the configs.

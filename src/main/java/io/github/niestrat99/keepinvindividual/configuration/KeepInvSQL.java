@@ -3,6 +3,7 @@ package io.github.niestrat99.keepinvindividual.configuration;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import io.github.niestrat99.keepinvindividual.KeepInvIndividual;
+import io.github.niestrat99.keepinvindividual.utilities.CacheList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -19,8 +20,6 @@ public class KeepInvSQL {
     This class is for the SQL part of saving data.
     If MySQL is either disabled or can't connect then we make the plugin use the local file instead until there is a connection.
     */
-
-    public static List<String> uniqueIdCache = new ArrayList<>();
 
     public static MysqlDataSource keepInvDataSource = new MysqlConnectionPoolDataSource();
 
@@ -45,31 +44,9 @@ public class KeepInvSQL {
         }
     }
 
-    public static String storeUniqueID(Player player) {
-        if (!uniqueIdCache.contains(player.getUniqueId().toString())) {
-            try (Connection conn = keepInvDataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(
-                    "SELECT uuid FROM players WHERE uuid = ?;"
-            )) {
-                stmt.setString(1, player.getUniqueId().toString());
-                ResultSet resultSet = stmt.executeQuery();
-                if (resultSet.next()) {
-                    uniqueIdCache.add(resultSet.getString("uuid"));
-                    return resultSet.getString("uuid");
-                }
-                return null;
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            return player.getUniqueId().toString();
-        }
-    }
-
-    public static boolean isInList(Player player) {return uniqueIdCache.contains(player.getUniqueId().toString());}
-
     public static void addUniqueID(Player player) {
-        if (!uniqueIdCache.contains(player.getUniqueId().toString())) {
-            uniqueIdCache.add(player.getUniqueId().toString());
+        if (!CacheList.isInList(player)) {
+            CacheList.addToList(player);
         }
 
         Bukkit.getScheduler().runTaskAsynchronously(KeepInvIndividual.get(), () -> {
@@ -86,7 +63,7 @@ public class KeepInvSQL {
     }
 
     public static void removeUniqueID(Player player) {
-        uniqueIdCache.remove(player.getUniqueId().toString());
+        CacheList.removeFromList(player);
 
         Bukkit.getScheduler().runTaskAsynchronously(KeepInvIndividual.get(), () -> {
             try (Connection conn = keepInvDataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(

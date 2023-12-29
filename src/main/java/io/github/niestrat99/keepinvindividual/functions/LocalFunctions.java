@@ -3,6 +3,7 @@ package io.github.niestrat99.keepinvindividual.functions;
 import io.github.niestrat99.keepinvindividual.KeepInvIndividual;
 import io.github.niestrat99.keepinvindividual.configuration.KeepInvLocal;
 import io.github.niestrat99.keepinvindividual.configuration.Messages;
+import io.github.niestrat99.keepinvindividual.utilities.CacheList;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -12,9 +13,10 @@ import java.util.Objects;
 public class LocalFunctions {
     public static void addPlayer(Player player, Player target) {
         if (target == null) {
-            if (!KeepInvLocal.getUniqueID(player)) {
+            if (!CacheList.isInList(player)) {
                 try {
                     KeepInvLocal.addUniqueID(player);
+                    CacheList.addToList(player);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -23,9 +25,10 @@ public class LocalFunctions {
                 player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.already-enabled.self"))));
             }
         } else {
-            if (!KeepInvLocal.getUniqueID(player)) {
+            if (!CacheList.isInList(target)) {
                 try {
                     KeepInvLocal.addUniqueID(player);
+                    CacheList.addToList(player);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -38,9 +41,10 @@ public class LocalFunctions {
 
     public static void removePlayer(Player player, Player target) {
         if (target == null) {
-            if (!KeepInvLocal.getUniqueID(player)) {
+            if (CacheList.isInList(player)) {
                 try {
                     KeepInvLocal.removeUniqueID(player);
+                    CacheList.removeFromList(player);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -49,9 +53,10 @@ public class LocalFunctions {
                 player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.already-disabled.self"))));
             }
         } else {
-            if (!KeepInvLocal.getUniqueID(player)) {
+            if (CacheList.isInList(target)) {
                 try {
                     KeepInvLocal.removeUniqueID(player);
+                    CacheList.removeFromList(player);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
