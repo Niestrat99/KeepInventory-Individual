@@ -25,7 +25,7 @@ public class Messages {
         messages.addDefault("info.reload.success", "&7Configurations were successfully reloaded!");
 
         messages.addDefault("error.no-permission", "&cYou do not have permission to use this command!");
-        messages.addDefault("error.no-such-player", "&cPlayer &e{plr} &cdoes not exist.");
+        messages.addDefault("error.no-such-player", "&cPlayer &e{player} &cdoes not exist.");
         messages.addDefault("error.invalid-arguments", "&cInvalid arguments. Usage: &e/keepinventory <on/off/reload> (player)");
         messages.addDefault("error.not-enough-arguments", "&cNot enough arguments. Usage: &e/keepinventory <on/off/reload> (player)");
         messages.addDefault("error.already-enabled.self", "&cIt is already enabled for you.");
