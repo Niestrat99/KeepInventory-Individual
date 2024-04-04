@@ -42,7 +42,7 @@ public class LocalFunctions {
             DebugModule.info("Player has been added to the local list.");
         } else {
             player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.already-enabled.self"))));
-            DebugModule.info("Player is already on local list. Stopping here.");
+            DebugModule.info("Player is already on local list.");
         }
     }
 
@@ -60,7 +60,7 @@ public class LocalFunctions {
             DebugModule.info("Player has been removed from the local list.");
         } else {
             player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.already-disabled.self"))));
-            DebugModule.info("Player is not on the local list. Stopping here.");
+            DebugModule.info("Player is not on the local list.");
         }
     }
 }

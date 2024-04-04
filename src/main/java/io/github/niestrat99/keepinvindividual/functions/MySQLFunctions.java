@@ -46,8 +46,10 @@ public class MySQLFunctions {
             DebugModule.info("Removing player from the SQL Database.");
             KeepInvSQL.removeUniqueID(player);
             player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.disabled.self"))));
+            DebugModule.info("Player has been removed from the SQL Database.");
         } else {
             player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.already-disabled.self"))));
+            DebugModule.info("Player is not in the SQL Database.");
         }
     }
 }
