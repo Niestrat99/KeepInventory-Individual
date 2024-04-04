@@ -38,10 +38,10 @@ public class LocalFunctions {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.enabled.self"))));
+            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.enabled")).replace("{player}", player.getName())));
             DebugModule.info("Player has been added to the local list.");
         } else {
-            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.already-enabled.self"))));
+            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.already-enabled")).replace("{player}", player.getName())));
             DebugModule.info("Player is already on local list.");
         }
     }
@@ -56,10 +56,10 @@ public class LocalFunctions {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.disabled.self"))));
+            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.disabled")).replace("{player}", player.getName())));
             DebugModule.info("Player has been removed from the local list.");
         } else {
-            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.already-disabled.self"))));
+            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.already-disabled")).replace("{player}", player.getName())));
             DebugModule.info("Player is not on the local list.");
         }
     }

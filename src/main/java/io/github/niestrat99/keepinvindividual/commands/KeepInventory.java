@@ -50,7 +50,7 @@ public class KeepInventory implements TabExecutor {
                                     return true;
                                 }
                             } else {
-                                sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.no-such-player"))));
+                                sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.no-such-player")).replace("{player}", args[1])));
                                 return false;
                             }
                         } else {
@@ -75,7 +75,7 @@ public class KeepInventory implements TabExecutor {
                                     return true;
                                 }
                             } else {
-                                sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.no-such-player"))));
+                                sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Messages.messages.getString("error.no-such-player").replace("{player}", args[1])));
                                 return false;
                             }
                         } else {

@@ -17,10 +17,8 @@ public class Messages {
     }
 
     public static void setMessages() throws IOException {
-        messages.addDefault("info.enabled.self", "&7Successfully enabled KeepInventory for yourself!");
-        messages.addDefault("info.enabled.other", "&7Successfully enabled KeepInventory for &e{player}&7!");
-        messages.addDefault("info.disabled.self", "&7Successfully disabled KeepInventory for yourself!");
-        messages.addDefault("info.disabled.other", "&7Successfully disabled KeepInventory for &e{player}&7!");
+        messages.addDefault("info.enabled", "&7Successfully enabled KeepInventory for &e{player}&7!");
+        messages.addDefault("info.disabled", "&7Successfully disabled KeepInventory for &e{player}&7!");
         messages.addDefault("info.reload.process", "&7Reloading configurations...");
         messages.addDefault("info.reload.success", "&7Configurations were successfully reloaded!");
 
@@ -28,10 +26,8 @@ public class Messages {
         messages.addDefault("error.no-such-player", "&cPlayer &e{player} &cdoes not exist.");
         messages.addDefault("error.invalid-arguments", "&cInvalid arguments. Usage: &e/keepinventory <on/off/reload> (player)");
         messages.addDefault("error.not-enough-arguments", "&cNot enough arguments. Usage: &e/keepinventory <on/off/reload> (player)");
-        messages.addDefault("error.already-enabled.self", "&cIt is already enabled for you.");
-        messages.addDefault("error.already-enabled.other", "&cIt is already enabled for &e{player} &c.");
-        messages.addDefault("error.already-disabled.self", "&cIt is already disabled for you.");
-        messages.addDefault("error.already-disabled.other","&cIt is already disabled for &e{player}");
+        messages.addDefault("error.already-enabled", "&cIt is already enabled for &e{player} &c.");
+        messages.addDefault("error.already-disabled","&cIt is already disabled for &e{player}.");
         messages.addDefault("error.empty-list", "&cThe list is empty.");
         messages.addDefault("error.must-be-number", "&cThe argument must be a number!");
         messages.addDefault("error.page-out-of-bounds", "&cThe list only goes up to {number} pages.");
