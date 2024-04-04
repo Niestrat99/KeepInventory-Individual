@@ -1,6 +1,7 @@
 package io.github.niestrat99.keepinvindividual.configuration;
 
 import io.github.niestrat99.keepinvindividual.KeepInvIndividual;
+import io.github.niestrat99.keepinvindividual.utilities.DebugModule;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -10,11 +11,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class KeepInvLocal {
-    /*
-    Idea:
-    - If there is no connection to a MySQL database then make a file with information instead.
-    - If there is a connection then it shall take the local file's data and delete it once done.
-    */
 
     public static File keepInvFile;
     public static FileConfiguration keepInv;
@@ -25,8 +21,6 @@ public class KeepInvLocal {
         keepInv = YamlConfiguration.loadConfiguration(keepInvFile);
         keepInvList = keepInv.getStringList("players");
     }
-
-
 
     public static void createFile() throws IOException {
         if (!KeepInvIndividual.get().getDataFolder().exists()) {

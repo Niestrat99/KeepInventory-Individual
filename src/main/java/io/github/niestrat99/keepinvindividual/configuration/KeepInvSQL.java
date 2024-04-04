@@ -4,16 +4,15 @@ import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import io.github.niestrat99.keepinvindividual.KeepInvIndividual;
 import io.github.niestrat99.keepinvindividual.utilities.CacheList;
+import io.github.niestrat99.keepinvindividual.utilities.DebugModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Debug;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class KeepInvSQL {
     /*
@@ -79,6 +78,7 @@ public class KeepInvSQL {
     }
 
     public static boolean importFromLocalFile() {
+        DebugModule.info("Initiated import of data from local KeepInv file into SQL Database.");
         try (Connection conn = keepInvDataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(
                 "INSERT INTO players(uuid) VALUES(?)"
         )) {
@@ -89,19 +89,25 @@ public class KeepInvSQL {
             }
             stmt.executeBatch();
 
+            DebugModule.info("Deleting local file.");
             KeepInvLocal.deleteFile();
+            DebugModule.info("Import successful!");
             return true;
         } catch (SQLException e) {
+            DebugModule.warn(e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
     public static void checkForTable() {
+        DebugModule.info("Checking if table for SQL Database exists.");
         try (Connection conn = keepInvDataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(
                 "CREATE TABLE IF NOT EXISTS players(uuid CHAR(36) NOT NULL)"
         )) {
+            DebugModule.info("Creating table.");
             stmt.execute();
         } catch (SQLException e) {
+            DebugModule.warn(e.getMessage());
             throw new RuntimeException(e);
         }
     }

@@ -3,6 +3,7 @@ version: ${plugin_version}
 author: Niestrat99
 description: Allow individual players to keep their inventory on death without using the gamerule.
 main: io.github.niestrat99.keepinvindividual.KeepInvIndividual
+api-version: 1.20
 
 permissions:
   ki.admin.cmd:
@@ -25,4 +26,4 @@ permissions:
 
 commands:
   keepinventory:
-    description: Used to enable KeepInventory for you, another player or to reload the configs.
+    description: Used to enable/disable keepInventory for players, reload config files or check a list.
