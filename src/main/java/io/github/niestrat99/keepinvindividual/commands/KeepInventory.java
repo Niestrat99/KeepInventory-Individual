@@ -34,7 +34,7 @@ public class KeepInventory implements TabExecutor {
             if (args.length > 0) {
                 switch (args[0]) {
                     case "on" -> {
-                        DebugModule.info("Player " + sender.getName() + " (" + ((Player) sender).getUniqueId() + ") called subcommand 'on'.");
+                        DebugModule.info("Player called subcommand 'on'.");
                         if (!checkPermission(sender, args[0])) { return false; }
                         if (args.length > 1) {
                             if (!sender.hasPermission("ki.admin.cmd.other")) {
@@ -64,7 +64,7 @@ public class KeepInventory implements TabExecutor {
                     }
                     case "off" -> {
                         if (args.length > 1) {
-                            DebugModule.info("Player " + sender.getName() + " (" + ((Player) sender).getUniqueId() + ") called subcommand 'off'.");
+                            DebugModule.info("Player called subcommand 'off'.");
                             if (!checkPermission(sender, args[0])) { return false; }
                             Player target = Bukkit.getPlayerExact(args[1]);
                             if (target != null) {
@@ -89,7 +89,7 @@ public class KeepInventory implements TabExecutor {
                     }
 
                     case "reload" -> {
-                        DebugModule.info("Player " + sender.getName() + " (" + ((Player) sender).getUniqueId() + ") called subcommand 'reload'.");
+                        DebugModule.info("Player called subcommand 'reload'.");
                         if (!checkPermission(sender, args[0])) { return false; }
                         sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.reload.process"))));
                         try {
@@ -108,7 +108,7 @@ public class KeepInventory implements TabExecutor {
                     }
 
                     case "list" -> {
-                        DebugModule.info("Player " + sender.getName() + " (" + ((Player) sender).getUniqueId() + ") called subcommand 'list' ");
+                        DebugModule.info("Player called subcommand 'list'.");
                         if (!checkPermission(sender, args[0])) { return false; }
                         DebugModule.info("Gathering data from cache list.");
                         PagedLists<String> cachedList = new PagedLists<>(CacheList.cacheList, 8);
@@ -155,7 +155,7 @@ public class KeepInventory implements TabExecutor {
                     }
 
                     case "help" -> {
-                        DebugModule.info("Player " + sender.getName() + " (" + ((Player) sender).getUniqueId() + ") called subcommand 'help'.");
+                        DebugModule.info("Player called subcommand 'help'.");
                         if (!checkPermission(sender, args[0])) { return false; }
                         HelpCommandFunction.sendHelp(player);
                     }
