@@ -13,7 +13,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
-        Player player = e.getPlayer();
+        Player player = e.getEntity();
         DebugModule.info(player.getName() + " (" + player.getUniqueId() + ") died.");
         if (KeepInvIndividual.mySqlEnabled) {
             if (CacheList.isInList(player)) {
