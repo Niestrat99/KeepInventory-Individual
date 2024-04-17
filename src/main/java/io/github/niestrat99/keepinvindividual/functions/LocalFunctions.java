@@ -49,8 +49,8 @@ public class LocalFunctions {
     private static void removePlayer(Player player) {
         DebugModule.info("Player info: " + player.getName() + " (" + player.getUniqueId() + ")");
         if (CacheList.isInList(player)) {
+            DebugModule.info("Removing player from local list.");
             try {
-                DebugModule.info("Removing player from local list.");
                 KeepInvLocal.removeUniqueID(player);
                 CacheList.removeFromList(player);
             } catch (IOException e) {
@@ -59,7 +59,7 @@ public class LocalFunctions {
             player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.disabled")).replace("{player}", player.getName())));
             DebugModule.info("Player has been removed from the local list.");
         } else {
-            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.already-disabled")).replace("{player}", player.getName())));
+            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.already-disabled")).replace("{player}", player.getName())));
             DebugModule.info("Player is not on the local list.");
         }
     }

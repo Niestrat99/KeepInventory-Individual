@@ -17,6 +17,7 @@ public class CacheList {
 
     public static boolean isInList(Player player) {
         String uuid = player.getUniqueId().toString();
+        KeepInvIndividual.get().getLogger().info(String.valueOf(cacheList.contains(uuid)));
         return cacheList.contains(uuid);
     }
 

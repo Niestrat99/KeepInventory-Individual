@@ -49,7 +49,7 @@ public class KeepInvLocal {
     }
 
     public static void removeUniqueID(Player player) throws IOException {
-        if (getUniqueID(player)) {
+        if (player != null && getUniqueID(player)) {
             keepInvList.remove(player.getUniqueId().toString());
             createFile();
         }
