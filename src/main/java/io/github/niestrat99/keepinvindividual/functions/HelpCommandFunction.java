@@ -17,11 +17,11 @@ public class HelpCommandFunction {
 
     private static List<String> commandList = new ArrayList<>(Arrays.asList(
              msg("&7--{&6KeepInventory Individual Commands&7}--"),
-            cmd("/keepinventory help", "Shows this list of commands."),
-            cmd("/keepinventory on (player)", "Enables KeepInventory for you or the specified player."),
-            cmd("/keepinventory off (player)", "Disables KeepInventory for you or the specified player."),
-            cmd("/keepinventory list", "Shows a list of players who currently got KeepInventory enabled."),
-            cmd("/keepinventory reload", "Reloads the config files and applies changes to the plugin.")
+            cmd("/keepinventory help"           , "Shows this list of commands."),
+            cmd("/keepinventory on (player)"    , "Enables KeepInventory for you or the specified player."),
+            cmd("/keepinventory off (player)"   , "Disables KeepInventory for you or the specified player."),
+            cmd("/keepinventory list"           , "Shows a list of players who currently got KeepInventory enabled."),
+            cmd("/keepinventory reload"         , "Reloads the config files and applies changes to the plugin.")
     ));
 
     private static String msg (String message) {

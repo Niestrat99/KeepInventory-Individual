@@ -3,10 +3,7 @@ package io.github.niestrat99.keepinvindividual.utilities;
 import io.github.niestrat99.keepinvindividual.KeepInvIndividual;
 import io.github.niestrat99.keepinvindividual.configuration.Config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class DebugModule {
 

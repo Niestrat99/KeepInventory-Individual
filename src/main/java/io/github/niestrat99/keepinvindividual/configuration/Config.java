@@ -1,8 +1,10 @@
 package io.github.niestrat99.keepinvindividual.configuration;
 
 import io.github.niestrat99.keepinvindividual.KeepInvIndividual;
+import io.github.niestrat99.keepinvindividual.utilities.DebugModule;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Debug;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,9 +15,6 @@ import java.util.List;
 public class Config {
     public static File configFile;
     public static FileConfiguration config;
-
-    public static List<String> deathCauses = new ArrayList<>();
-    public static List<String> worldblacklist = new ArrayList<>();
 
     public static void initConfigFile() {
         configFile = new File(KeepInvIndividual.get().getDataFolder(), "config.yml");
@@ -39,7 +38,7 @@ public class Config {
         )));
         //World Blacklist
         config.addDefault("world-blacklist.enabled", false);
-        config.addDefault("world-blacklist.blackist", new ArrayList<>());
+        config.addDefault("world-blacklist.blacklist", new ArrayList<>());
         //DeathCause Blacklist
         config.addDefault("deathcause-blacklist.enabled", false);
         config.addDefault("deathcause-blacklist.blacklist", new ArrayList<>());
@@ -55,9 +54,17 @@ public class Config {
 
     public static void save() throws IOException {
         config.options().copyDefaults(true);
-        deathCauses.addAll(config.getStringList("deathcause-blacklist.blacklist"));
-        worldblacklist.addAll(config.getStringList("world-blacklist.blacklist"));
         config.save(configFile);
+
+        DebugModule.info("World blacklist content:");
+        for (String world : Config.config.getStringList("world-blacklist.blacklist")) {
+            DebugModule.info("- " + world);
+        }
+        DebugModule.info("-----------------------");
+        DebugModule.info("Death cause blacklist content:");
+        for (String cause : config.getStringList("deathcause-blacklist.blacklist")) {
+            DebugModule.info("- " + cause);
+        }
     }
 
     public static void reload() throws IOException {
