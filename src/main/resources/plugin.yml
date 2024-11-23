@@ -6,7 +6,10 @@ main: io.github.niestrat99.keepinvindividual.KeepInvIndividual
 api-version: 1.20
 
 permissions:
-  ki.admin.cmd:
+  ki.admin.cmd.on:
+    default: op
+
+  ki.admin.cmd.off:
     default: op
 
   ki.admin.cmd.other:
