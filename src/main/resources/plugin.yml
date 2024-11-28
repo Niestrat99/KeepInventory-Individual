@@ -27,6 +27,12 @@ permissions:
   ki.keepxp:
     default: op
 
+  ki.onjoin.on:
+    default: op
+
+  ki.onjoin.off:
+    default: op
+
 commands:
   keepinventory:
     description: Used to enable/disable keepInventory for players, reload config files or check a list.
