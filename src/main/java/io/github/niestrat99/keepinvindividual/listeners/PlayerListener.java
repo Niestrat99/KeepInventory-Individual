@@ -46,6 +46,7 @@ public class PlayerListener implements Listener {
                 if (Config.config.getBoolean("debug.send-on-join-notification")) {
                     player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.on-join.blacklisted"))));
                 }
+                return;
             }
             if (!playerIsInList(player)) {
                 if (KeepInvIndividual.mySqlEnabled) {
