@@ -21,6 +21,9 @@ public class Messages {
         messages.addDefault("info.disabled", "&7Successfully disabled KeepInventory for &e{player}&7!");
         messages.addDefault("info.reload.process", "&7Reloading configurations...");
         messages.addDefault("info.reload.success", "&7Configurations were successfully reloaded!");
+        messages.addDefault("info.on-join.enabled", "&7KeepInventory has been enabled for you by default!");
+        messages.addDefault("info.on-join.disabled", "&7KeepInventory has been disabled for you by default!");
+        messages.addDefault("info.on-join.blacklisted", "&7KeepInventory disabled, because you're in a blacklisted world!");
 
         messages.addDefault("error.no-permission", "&cYou do not have permission to use this command!");
         messages.addDefault("error.no-such-player", "&cPlayer &e{player} &cdoes not exist.");

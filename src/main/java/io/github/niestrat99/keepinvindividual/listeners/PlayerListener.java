@@ -3,13 +3,17 @@ package io.github.niestrat99.keepinvindividual.listeners;
 import io.github.niestrat99.keepinvindividual.KeepInvIndividual;
 import io.github.niestrat99.keepinvindividual.configuration.Config;
 import io.github.niestrat99.keepinvindividual.configuration.KeepInvLocal;
+import io.github.niestrat99.keepinvindividual.configuration.Messages;
 import io.github.niestrat99.keepinvindividual.utilities.CacheList;
 import io.github.niestrat99.keepinvindividual.utilities.DebugModule;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class PlayerListener implements Listener {
@@ -21,19 +25,54 @@ public class PlayerListener implements Listener {
                         + "\nCause of death: " + Objects.requireNonNull(player.getLastDamageCause()).getCause().toString()
                         + "\nDied in world: " + Objects.requireNonNull(player.getWorld().getName())
         );
-        if (KeepInvIndividual.mySqlEnabled) {
-            if (CacheList.isInList(player)) {
-                if (checkForConfigStuff(player)) {
-                    handleDeath(player, e);
+
+        if (playerIsInList(player) && (checkForConfigStuff(player))) {
+            handleDeath(player, e);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) throws IOException {
+        Player player = e.getPlayer();
+        if (player.hasPermission("ki.onjoin.on")) {
+            DebugModule.info("Player " + player.getName() + " has permission to have KeepInv enabled by default.");
+            if (!checkForConfigStuff(player) && playerIsInList(player)) {
+                DebugModule.info("Player is in a blacklisted world. Aborting task.");
+                if (KeepInvIndividual.mySqlEnabled) {
+                    CacheList.removeFromList(player);
+                } else {
+                    KeepInvLocal.removeUniqueID(player);
+                }
+                if (Config.config.getBoolean("debug.send-on-join-notification")) {
+                    player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.on-join.blacklisted"))));
                 }
             }
-        } else {
-            if (KeepInvLocal.getUniqueID(player)) {
-                if (checkForConfigStuff(player)) {
-                    handleDeath(player, e);
+            if (!playerIsInList(player)) {
+                if (KeepInvIndividual.mySqlEnabled) {
+                    CacheList.addToList(player);
+                } else {
+                    KeepInvLocal.addUniqueID(player);
+                }
+                if (Config.config.getBoolean("debug.send-on-join-notification")) {
+                    player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.on-join.enabled"))));
+                }
+            }
+
+        } else if (player.hasPermission("ki.onjoin.off")) {
+            if (playerIsInList(player)) {
+                DebugModule.info("Player " + player.getName() + " has permission to have KeepInv disabled by default.");
+                if (KeepInvIndividual.mySqlEnabled) {
+                    CacheList.removeFromList(player);
+                } else {
+                    KeepInvLocal.removeUniqueID(player);
+                }
+                DebugModule.info("Disabled KeepInventory for player " + player.getName() + ".");
+                if (Config.config.getBoolean("debug.send-on-join-notification")) {
+                    player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.on-join.disabled"))));
                 }
             }
         }
+
     }
 
     // Functions
@@ -62,5 +101,13 @@ public class PlayerListener implements Listener {
         DebugModule.info("Player does not have permission to keep their XP-Level.");
         e.setKeepInventory(true);
         e.getDrops().clear();
+    }
+
+    public boolean playerIsInList(Player player) {
+        if (KeepInvIndividual.mySqlEnabled) {
+            return CacheList.isInList(player);
+        } else {
+            return KeepInvLocal.getUniqueID(player);
+        }
     }
 }
