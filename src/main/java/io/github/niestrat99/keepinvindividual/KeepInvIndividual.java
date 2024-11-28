@@ -8,11 +8,13 @@ import io.github.niestrat99.keepinvindividual.configuration.Messages;
 import io.github.niestrat99.keepinvindividual.listeners.PlayerListener;
 import io.github.niestrat99.keepinvindividual.utilities.CacheList;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class KeepInvIndividual extends JavaPlugin {
 
@@ -86,4 +88,15 @@ public class KeepInvIndividual extends JavaPlugin {
     }
 
     public static KeepInvIndividual get() {return instance;}
+
+    public static void log(Level level, String msg, Class<?> sourceClass, Exception stacktrace) {
+        String message = msg;
+        if (sourceClass != null) {
+            message = message.concat("\n(" + sourceClass.getName() + ")");
+        }
+        if (stacktrace != null) {
+            message = message.concat("\nStacktrace:\n" + stacktrace);
+        }
+        instance.getLogger().log(level, message);
+    }
 }
