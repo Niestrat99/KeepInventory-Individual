@@ -26,11 +26,11 @@ public class KeepInventory implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player player) {
             DebugModule.info("Player " + sender.getName() + " (" + ((Player) sender).getUniqueId() + ") executed command.");
-            if (!sender.hasPermission("ki.admin.cmd")) {
+            /*if (!sender.hasPermission("ki.admin.cmd")) {
                 DebugModule.info("Player has no permission to use this command.");
                 sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.no-permission"))));
                 return false;
-            }
+            }*/
             if (args.length > 0) {
                 switch (args[0]) {
                     case "on" -> {
