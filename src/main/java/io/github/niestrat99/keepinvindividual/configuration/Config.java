@@ -2,6 +2,7 @@ package io.github.niestrat99.keepinvindividual.configuration;
 
 import io.github.niestrat99.keepinvindividual.KeepInvIndividual;
 import io.github.niestrat99.keepinvindividual.utilities.DebugModule;
+import io.github.niestrat99.keepinvindividual.utilities.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Debug;
@@ -11,14 +12,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 public class Config {
     public static File configFile;
     public static FileConfiguration config;
 
-    public static void initConfigFile() {
+    public static void initConfigFile() throws IOException {
         configFile = new File(KeepInvIndividual.get().getDataFolder(), "config.yml");
+        if (!configFile.exists()) {
+            Logger.log(Level.WARNING, "config.yml is missing, creating a new file!");
+            boolean createSuccessful = configFile.createNewFile();
+            if (!createSuccessful) {
+                Logger.log(Level.SEVERE, "Could not create config file!");
+                return;
+            }
+        }
         config = YamlConfiguration.loadConfiguration(configFile);
+        setDefaults();
     }
 
     public static void setDefaults() throws IOException {
@@ -69,6 +80,5 @@ public class Config {
 
     public static void reload() throws IOException {
         initConfigFile();
-        save();
     }
 }

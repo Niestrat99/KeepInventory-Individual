@@ -2,6 +2,7 @@ package io.github.niestrat99.keepinvindividual.configuration;
 
 import io.github.niestrat99.keepinvindividual.KeepInvIndividual;
 import io.github.niestrat99.keepinvindividual.utilities.DebugModule;
+import io.github.niestrat99.keepinvindividual.utilities.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
 
 public class KeepInvLocal {
 
@@ -25,7 +27,7 @@ public class KeepInvLocal {
     public static void createFile() throws IOException {
         if (!KeepInvIndividual.get().getDataFolder().exists()) {
             if (!KeepInvIndividual.get().getDataFolder().mkdirs()) {
-                KeepInvIndividual.get().getLogger().warning(KeepInvIndividual.plTitle + "Failed to create directory!");
+                Logger.log(Level.WARNING, "Failed to create directory!");
             }
         }
         if (!keepInvFile.exists()) {

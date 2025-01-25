@@ -7,6 +7,7 @@ import io.github.niestrat99.keepinvindividual.configuration.KeepInvSQL;
 import io.github.niestrat99.keepinvindividual.configuration.Messages;
 import io.github.niestrat99.keepinvindividual.listeners.PlayerListener;
 import io.github.niestrat99.keepinvindividual.utilities.CacheList;
+import io.github.niestrat99.keepinvindividual.utilities.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,33 +20,36 @@ import java.util.logging.Level;
 public class KeepInvIndividual extends JavaPlugin {
 
     private static KeepInvIndividual instance;
-    public static String plTitle = ChatColor.translateAlternateColorCodes('&', "&6[&bK&7II&6]&r ");
-
     public static boolean mySqlEnabled;
 
     @Override
     public void onEnable() {
         instance = this;
 
-        getLogger().info(plTitle + "KeepInventoryIndividuals is startin' up!");
+        Logger.log(Level.INFO, "KeepInventory Individual is starting up.");
 
         // Commands
-        getLogger().info(plTitle + "Registering commands...");
+        Logger.log(Level.INFO, "Registering commands...");
         Objects.requireNonNull(getCommand("keepinventory")).setExecutor(new KeepInventory());
         Objects.requireNonNull(getCommand("keepinventory")).setTabCompleter(new KeepInventory());
 
         // Events
-        getLogger().info(plTitle + "Registering events...");
+        Logger.log(Level.INFO, "Registering events...");
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
         // Config
         KeepInvLocal.initLocalFile();
-        Config.initConfigFile();
-        Messages.initMessagesFile();
+
+        try {
+            Config.initConfigFile();
+            Messages.initMessagesFile();
+        } catch (IOException e) {
+            Logger.log(Level.SEVERE, "Something went wrong initializing a configuration file!", this.getClass(), e);
+        }
 
         mySqlEnabled = Config.config.getBoolean("mysql.enabled");
 
-        getLogger().info(plTitle + "Setting up config files...");
+        Logger.log(Level.INFO, "Setting up config files...");
         try {
             Config.setDefaults();
             Messages.setMessages();
@@ -55,7 +59,7 @@ public class KeepInvIndividual extends JavaPlugin {
 
         // MySQL
         if (mySqlEnabled) {
-            getLogger().info(plTitle + "Loading up databases...");
+            Logger.log(Level.INFO, "Setting up databases...");
             try {
                 KeepInvSQL.initializeDataSource();
             } catch (SQLException e) {
@@ -63,40 +67,29 @@ public class KeepInvIndividual extends JavaPlugin {
             }
             KeepInvSQL.checkForTable();
 
-            getLogger().info(plTitle + "Database successfully loaded!");
+            Logger.log(Level.INFO, "Database successfully loaded!");
 
             if (KeepInvLocal.keepInvFile.exists()) {
-                getLogger().info(plTitle + "Local data file found. Importing...");
+                Logger.log(Level.INFO, "Local data file found. Importing...");
 
                 if (KeepInvSQL.importFromLocalFile()) {
-                    getLogger().info(plTitle + "Successfully imported local data into the MySQL Database!");
+                    Logger.log(Level.INFO, "Successfully imported local data into the MySQL Database!");
                 } else {
-                    getLogger().warning(plTitle + "Something went wrong when importing local data...");
+                    Logger.log(Level.INFO, "Something went wrong when importing local data...");
                 }
             }
 
         } else {
-            getLogger().info(plTitle + "MySQL disabled, moving on to local storage instead.");
+            Logger.log(Level.INFO, "MySQL disabled, moving on to local storage instead.");
         }
 
         // Cache Build
-        getLogger().info(plTitle + "Building cache");
+        Logger.log(Level.INFO, "Building cache");
         CacheList.buildCache();
 
         // When everything's done
-        getLogger().info(plTitle + "And we're up!");
+        Logger.log(Level.INFO, "KeepInventory Individual finished setup!");
     }
 
     public static KeepInvIndividual get() {return instance;}
-
-    public static void log(Level level, String msg, Class<?> sourceClass, Exception stacktrace) {
-        String message = msg;
-        if (sourceClass != null) {
-            message = message.concat("\n(" + sourceClass.getName() + ")");
-        }
-        if (stacktrace != null) {
-            message = message.concat("\nStacktrace:\n" + stacktrace);
-        }
-        instance.getLogger().log(level, message);
-    }
 }

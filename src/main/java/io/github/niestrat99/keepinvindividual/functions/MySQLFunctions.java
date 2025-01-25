@@ -5,6 +5,7 @@ import io.github.niestrat99.keepinvindividual.configuration.KeepInvSQL;
 import io.github.niestrat99.keepinvindividual.configuration.Messages;
 import io.github.niestrat99.keepinvindividual.utilities.CacheList;
 import io.github.niestrat99.keepinvindividual.utilities.DebugModule;
+import io.github.niestrat99.keepinvindividual.utilities.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -32,10 +33,10 @@ public class MySQLFunctions {
         if (!CacheList.isInList(player)) {
             DebugModule.info("Adding player to SQl Database.");
             KeepInvSQL.addUniqueID(player);
-            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.enabled")).replace("{player}", player.getName())));
+            Logger.msg(player, Messages.getMsg("info.enabled").replace("{player}", player.getName()));
             DebugModule.info("Player has been added to the SQL Database.");
         } else {
-            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.already-enabled")).replace("{player}", player.getName())));
+            Logger.msg(player, Messages.getMsg("error.already-enabled").replace("{player}", player.getName()));
             DebugModule.info("Player is already in the SQL Database.");
         }
     }
@@ -45,10 +46,10 @@ public class MySQLFunctions {
         if (CacheList.isInList(player)) {
             DebugModule.info("Removing player from the SQL Database.");
             KeepInvSQL.removeUniqueID(player);
-            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.disabled")).replace("{player}", player.getName())));
+            Logger.msg(player, Messages.getMsg("info.disabled").replace("{player}", player.getName()));
             DebugModule.info("Player has been removed from the SQL Database.");
         } else {
-            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.already-disabled")).replace("{player}", player.getName())));
+            Logger.msg(player, Messages.getMsg("error.already-disabled").replace("{player}", player.getName()));
             DebugModule.info("Player is not in the SQL Database.");
         }
     }

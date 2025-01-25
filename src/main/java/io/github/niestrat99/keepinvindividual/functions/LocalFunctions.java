@@ -5,6 +5,7 @@ import io.github.niestrat99.keepinvindividual.configuration.KeepInvLocal;
 import io.github.niestrat99.keepinvindividual.configuration.Messages;
 import io.github.niestrat99.keepinvindividual.utilities.CacheList;
 import io.github.niestrat99.keepinvindividual.utilities.DebugModule;
+import io.github.niestrat99.keepinvindividual.utilities.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -38,10 +39,10 @@ public class LocalFunctions {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.enabled")).replace("{player}", player.getName())));
+            Logger.msg(player, Messages.getMsg("info.enabled").replace("{player}", player.getName()));
             DebugModule.info("Player has been added to the local list.");
         } else {
-            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.already-enabled")).replace("{player}", player.getName())));
+            Logger.msg(player, Messages.getMsg("error.already-enabled").replace("{player}", player.getName()));
             DebugModule.info("Player is already on local list.");
         }
     }
@@ -56,10 +57,10 @@ public class LocalFunctions {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.disabled")).replace("{player}", player.getName())));
+            Logger.msg(player, Messages.getMsg("info.disabled").replace("{player}", player.getName()));
             DebugModule.info("Player has been removed from the local list.");
         } else {
-            player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.already-disabled")).replace("{player}", player.getName())));
+            Logger.msg(player, Messages.getMsg("error.already-disabled").replace("{player}", player.getName()));
             DebugModule.info("Player is not on the local list.");
         }
     }

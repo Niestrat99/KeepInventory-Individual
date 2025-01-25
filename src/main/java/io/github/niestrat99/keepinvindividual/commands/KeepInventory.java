@@ -8,6 +8,7 @@ import io.github.niestrat99.keepinvindividual.functions.LocalFunctions;
 import io.github.niestrat99.keepinvindividual.functions.MySQLFunctions;
 import io.github.niestrat99.keepinvindividual.utilities.CacheList;
 import io.github.niestrat99.keepinvindividual.utilities.DebugModule;
+import io.github.niestrat99.keepinvindividual.utilities.Logger;
 import io.github.niestrat99.keepinvindividual.utilities.PagedLists;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,11 +27,6 @@ public class KeepInventory implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player player) {
             DebugModule.info("Player " + sender.getName() + " (" + ((Player) sender).getUniqueId() + ") executed command.");
-            /*if (!sender.hasPermission("ki.admin.cmd")) {
-                DebugModule.info("Player has no permission to use this command.");
-                sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.no-permission"))));
-                return false;
-            }*/
             if (args.length > 0) {
                 switch (args[0]) {
                     case "on" -> {
@@ -38,7 +34,7 @@ public class KeepInventory implements TabExecutor {
                         if (!checkPermission(sender, args[0])) { return false; }
                         if (args.length > 1) {
                             if (!sender.hasPermission("ki.admin.cmd.other")) {
-                                sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.no-permission"))));
+                                Logger.msg(player, Messages.getMsg("error.no-permission"));
                                 return false;
                             }
                             Player target = Bukkit.getPlayerExact(args[1]);
@@ -50,7 +46,7 @@ public class KeepInventory implements TabExecutor {
                                     return true;
                                 }
                             } else {
-                                sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.no-such-player")).replace("{player}", args[1])));
+                                Logger.msg(player, Messages.getMsg("error.no-such-player").replace("{player}", args[1]));
                                 return false;
                             }
                         } else {
@@ -75,7 +71,7 @@ public class KeepInventory implements TabExecutor {
                                     return true;
                                 }
                             } else {
-                                sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Messages.messages.getString("error.no-such-player").replace("{player}", args[1])));
+                                Logger.msg(player, Messages.getMsg("error.no-such-player").replace("{player}", args[1]));
                                 return false;
                             }
                         } else {
@@ -91,7 +87,7 @@ public class KeepInventory implements TabExecutor {
                     case "reload" -> {
                         DebugModule.info("Player called subcommand 'reload'.");
                         if (!checkPermission(sender, args[0])) { return false; }
-                        sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.reload.process"))));
+                        Logger.msg(player, Messages.getMsg("info.reload.process"));
                         try {
                             DebugModule.info("Reloading config.yml.");
                             Config.reload();
@@ -102,7 +98,7 @@ public class KeepInventory implements TabExecutor {
                             throw new RuntimeException(e);
                         }
                         DebugModule.info("Reload finished!");
-                        sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.reload.success"))));
+                        Logger.msg(player, Messages.getMsg("info.reload.success"));
                         return true;
 
                     }
@@ -113,41 +109,41 @@ public class KeepInventory implements TabExecutor {
                         DebugModule.info("Gathering data from cache list.");
                         PagedLists<String> cachedList = new PagedLists<>(CacheList.cacheList, 8);
                         if (cachedList.getTotalContents() < 1) {
-                            sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.empty-list"))));
+                            Logger.msg(player, Messages.getMsg("error.empty-list"));
                             DebugModule.info("Cache list is empty.");
                             return false;
                         }
                         if (args.length > 1) {
                             if (!args[1].matches("^[\\d]$")) {
-                                sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.must-be-number"))));
+                                Logger.msg(player, Messages.getMsg("error.must-be-number"));
                                 return false;
                             }
                             if (cachedList.getTotalPages() < Integer.parseInt(args[1])) {
-                                sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.page-out-of-bounds")).replace("{number}", String.valueOf(cachedList.getTotalPages()))));
+                                Logger.msg(player, Messages.getMsg("error.page-out-of-bounds").replace("{number}", String.valueOf(cachedList.getTotalPages())));
                                 return false;
                             }
                             DebugModule.info("Sending list to player.");
-                            sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', "&7Page &6" + cachedList.getCurrentPage() + "&7 / &6" + cachedList.getTotalPages()));
+                            Logger.msg(player, "&7Page &6" + cachedList.getCurrentPage() + "&7 / &6" + cachedList.getTotalPages());
                             Bukkit.getScheduler().runTaskAsynchronously(KeepInvIndividual.get(), () -> {
                                 for (String uuid : cachedList.getContentsInPage(Integer.parseInt(args[1]))) {
                                     String name = Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName();
-                                    sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', "&7> &6" + name));
+                                    Logger.msg(player, "&7> &6" + name);
                                 }
 
                                 if (cachedList.getTotalPages() > 1) {
-                                    sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', "&7Type &6/keepinventory list (page) &7to get to view another page."));
+                                    Logger.msg(player, "&7Type &6/keepinventory list (page) &7to get to view another page.");
                                 }
                             });
                         } else {
-                            sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', "&7Page &6" + cachedList.getCurrentPage() + "&7 / &6" + cachedList.getTotalPages()));
+                            Logger.msg(player, "&7Page &6" + cachedList.getCurrentPage() + "&7 / &6" + cachedList.getTotalPages());
                             Bukkit.getScheduler().runTaskAsynchronously(KeepInvIndividual.get(), () -> {
                                 for (String uuid : cachedList.getContentsInPage(1)) {
                                     String name = Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName();
-                                    sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', "&7> &6" + name));
+                                    Logger.msg(player, "&7> &6" + name);
                                 }
 
                                 if (cachedList.getTotalPages() > 1) {
-                                    sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', "&7Type &6/keepinventory list (page) &7to get to view another page."));
+                                    Logger.msg(player, "&7Type &6/keepinventory list (page) &7to get to view another page.");
                                 }
                             });
                         }
@@ -161,12 +157,12 @@ public class KeepInventory implements TabExecutor {
                     }
 
                     default -> {
-                        sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.invalid-arguments"))));
+                        Logger.msg(player, Messages.getMsg("error.invalid-arguments"));
                         return false;
                     }
                 }
             } else {
-                sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.not-enough-arguments"))));
+                Logger.msg(player, Messages.getMsg("error.not-enough-arguments"));
                 return false;
             }
         }
@@ -190,7 +186,7 @@ public class KeepInventory implements TabExecutor {
     private static boolean checkPermission(CommandSender sender, String permission) {
         if (!sender.hasPermission("ki.admin.cmd." + permission)) {
             DebugModule.info("Player has no permisson to use this command.");
-            sender.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("error.no-permission"))));
+            Logger.msg((Player) sender, Messages.getMsg("error.no-permission"));
             return false;
         }
         return true;

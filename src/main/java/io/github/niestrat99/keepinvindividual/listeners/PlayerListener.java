@@ -6,6 +6,7 @@ import io.github.niestrat99.keepinvindividual.configuration.KeepInvLocal;
 import io.github.niestrat99.keepinvindividual.configuration.Messages;
 import io.github.niestrat99.keepinvindividual.utilities.CacheList;
 import io.github.niestrat99.keepinvindividual.utilities.DebugModule;
+import io.github.niestrat99.keepinvindividual.utilities.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,7 +45,7 @@ public class PlayerListener implements Listener {
                     KeepInvLocal.removeUniqueID(player);
                 }
                 if (Config.config.getBoolean("debug.send-on-join-notification")) {
-                    player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.on-join.blacklisted"))));
+                    Logger.msg(player, Messages.getMsg("info.on-join.blacklisted"));
                 }
                 return;
             }
@@ -55,7 +56,7 @@ public class PlayerListener implements Listener {
                     KeepInvLocal.addUniqueID(player);
                 }
                 if (Config.config.getBoolean("debug.send-on-join-notification")) {
-                    player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.on-join.enabled"))));
+                    Logger.msg(player, Messages.getMsg("info.on-join.enabled"));
                 }
             }
 
@@ -69,7 +70,7 @@ public class PlayerListener implements Listener {
                 }
                 DebugModule.info("Disabled KeepInventory for player " + player.getName() + ".");
                 if (Config.config.getBoolean("debug.send-on-join-notification")) {
-                    player.sendMessage(KeepInvIndividual.plTitle + ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Messages.messages.getString("info.on-join.disabled"))));
+                    Logger.msg(player, Messages.getMsg("info.on-join.disabled"));
                 }
             }
         }
