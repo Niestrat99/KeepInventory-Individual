@@ -18,7 +18,17 @@ public class Config {
     public static File configFile;
     public static FileConfiguration config;
 
+    private static void checkForDirectory() {
+        if (!KeepInvIndividual.get().getDataFolder().exists()) {
+            boolean created = KeepInvIndividual.get().getDataFolder().mkdir();
+            if (!created) {
+                Logger.log(Level.SEVERE, "Failed to create DataFolder for KeepInventory Individual. Please report this to the developer!", Config.class, null);
+            }
+        }
+    }
+
     public static void initConfigFile() throws IOException {
+        checkForDirectory();
         configFile = new File(KeepInvIndividual.get().getDataFolder(), "config.yml");
         if (!configFile.exists()) {
             Logger.log(Level.WARNING, "config.yml is missing, creating a new file!");
