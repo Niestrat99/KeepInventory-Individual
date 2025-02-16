@@ -36,6 +36,14 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
+      - name: Archive Artifact
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: KeepInventory-Individual
+          path: build/libs/Keep-Inv-Individual-*.jar
+          if-no-files-found: error
+
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
     #
