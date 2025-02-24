@@ -20,6 +20,7 @@ public class Config {
 
     private static void checkForDirectory() {
         if (!KeepInvIndividual.get().getDataFolder().exists()) {
+            Logger.log(Level.WARNING, "Missing directory folder, creating it now!");
             boolean created = KeepInvIndividual.get().getDataFolder().mkdir();
             if (!created) {
                 Logger.log(Level.SEVERE, "Failed to create DataFolder for KeepInventory Individual. Please report this to the developer!", Config.class, null);
