@@ -13,9 +13,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class PlayerListener implements Listener {
     @EventHandler
@@ -103,6 +105,16 @@ public class PlayerListener implements Listener {
         DebugModule.info("Player does not have permission to keep their XP-Level.");
         e.setKeepInventory(true);
         e.getDrops().clear();
+
+        // Item drop blacklist functionality
+        if (Config.config.getBoolean("itemdrop-blacklist.enabled")) {
+            for (ItemStack item : player.getInventory()) {
+                if (Config.config.getStringList("itemdrop-blacklist.blacklist").contains(item.getType().name().toLowerCase())) {
+                    player.getInventory().remove(item);
+                    e.getDrops().add(item);
+                }
+            }
+        }
     }
 
     public boolean playerIsInList(Player player) {

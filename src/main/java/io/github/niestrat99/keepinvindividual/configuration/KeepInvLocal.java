@@ -1,6 +1,7 @@
 package io.github.niestrat99.keepinvindividual.configuration;
 
 import io.github.niestrat99.keepinvindividual.KeepInvIndividual;
+import io.github.niestrat99.keepinvindividual.utilities.CacheList;
 import io.github.niestrat99.keepinvindividual.utilities.DebugModule;
 import io.github.niestrat99.keepinvindividual.utilities.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,6 +23,8 @@ public class KeepInvLocal {
         keepInvFile = new File(KeepInvIndividual.get().getDataFolder(), "keepInvList.yml");
         keepInv = YamlConfiguration.loadConfiguration(keepInvFile);
         keepInvList = keepInv.getStringList("players");
+
+        CacheList.cacheList.addAll(keepInv.getStringList("players"));
     }
 
     public static void createFile() throws IOException {

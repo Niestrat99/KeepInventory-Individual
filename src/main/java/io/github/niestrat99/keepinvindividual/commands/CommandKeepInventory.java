@@ -11,7 +11,6 @@ import io.github.niestrat99.keepinvindividual.utilities.DebugModule;
 import io.github.niestrat99.keepinvindividual.utilities.Logger;
 import io.github.niestrat99.keepinvindividual.utilities.PagedLists;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.util.*;
 
-public class KeepInventory implements TabExecutor {
+public class CommandKeepInventory implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player player) {
