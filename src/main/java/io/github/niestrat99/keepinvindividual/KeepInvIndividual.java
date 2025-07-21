@@ -1,6 +1,6 @@
 package io.github.niestrat99.keepinvindividual;
 
-import io.github.niestrat99.keepinvindividual.commands.KeepInventory;
+import io.github.niestrat99.keepinvindividual.commands.CommandKeepInventory;
 import io.github.niestrat99.keepinvindividual.configuration.Config;
 import io.github.niestrat99.keepinvindividual.configuration.KeepInvLocal;
 import io.github.niestrat99.keepinvindividual.configuration.KeepInvSQL;
@@ -8,8 +8,6 @@ import io.github.niestrat99.keepinvindividual.configuration.Messages;
 import io.github.niestrat99.keepinvindividual.listeners.PlayerListener;
 import io.github.niestrat99.keepinvindividual.utilities.CacheList;
 import io.github.niestrat99.keepinvindividual.utilities.Logger;
-import org.bukkit.ChatColor;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -30,8 +28,8 @@ public class KeepInvIndividual extends JavaPlugin {
 
         // Commands
         Logger.log(Level.INFO, "Registering commands...");
-        Objects.requireNonNull(getCommand("keepinventory")).setExecutor(new KeepInventory());
-        Objects.requireNonNull(getCommand("keepinventory")).setTabCompleter(new KeepInventory());
+        Objects.requireNonNull(getCommand("keepinventory")).setExecutor(new CommandKeepInventory());
+        Objects.requireNonNull(getCommand("keepinventory")).setTabCompleter(new CommandKeepInventory());
 
         // Events
         Logger.log(Level.INFO, "Registering events...");

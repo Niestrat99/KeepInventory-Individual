@@ -42,7 +42,7 @@ public class LocalFunctions {
             Logger.msg(player, Messages.getMsg("info.enabled").replace("{player}", player.getName()));
             DebugModule.info("Player has been added to the local list.");
         } else {
-            Logger.msg(player, Messages.getMsg("error.already-enabled").replace("{player}", player.getName()));
+            Logger.msg(player, Messages.getMsg("error.already-enabled.self").replace("{player}", player.getName()));
             DebugModule.info("Player is already on local list.");
         }
     }
