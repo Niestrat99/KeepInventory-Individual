@@ -101,8 +101,9 @@ public class PlayerListener implements Listener {
             DebugModule.info("Player has permission to keep their XP-Level.");
             e.setKeepLevel(true);
             e.setDroppedExp(0);
+        } else {
+            DebugModule.info("Player does not have permission to keep their XP-Level.");
         }
-        DebugModule.info("Player does not have permission to keep their XP-Level.");
         e.setKeepInventory(true);
         e.getDrops().clear();
 
