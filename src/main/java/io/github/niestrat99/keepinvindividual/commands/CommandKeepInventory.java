@@ -1,6 +1,7 @@
 package io.github.niestrat99.keepinvindividual.commands;
 
 import io.github.niestrat99.keepinvindividual.KeepInvIndividual;
+import io.github.niestrat99.keepinvindividual.commands.subcommands.KeepInventoryToggle;
 import io.github.niestrat99.keepinvindividual.configuration.Config;
 import io.github.niestrat99.keepinvindividual.configuration.Messages;
 import io.github.niestrat99.keepinvindividual.functions.HelpCommandFunction;
@@ -27,59 +28,42 @@ public class CommandKeepInventory implements TabExecutor {
         if (sender instanceof Player player) {
             DebugModule.info("Player " + sender.getName() + " (" + ((Player) sender).getUniqueId() + ") executed command.");
             if (args.length > 0) {
+                if (!checkPermission(player, args[0])) {return false;}
                 switch (args[0]) {
                     case "on" -> {
                         DebugModule.info("Player called subcommand 'on'.");
-                        if (!checkPermission(sender, args[0])) { return false; }
                         if (args.length > 1) {
                             if (!sender.hasPermission("ki.admin.cmd.other")) {
                                 Logger.msg(player, Messages.getMsg("error.no-permission"));
                                 return false;
                             }
                             Player target = Bukkit.getPlayerExact(args[1]);
-                            if (target != null) {
-                                if (KeepInvIndividual.mySqlEnabled) {
-                                    Bukkit.getScheduler().runTaskAsynchronously(KeepInvIndividual.get(), () -> MySQLFunctions.addPlayer(player, target));
-                                } else {
-                                    LocalFunctions.addPlayer(player, target);
-                                    return true;
-                                }
-                            } else {
+                            if (target == null) {
                                 Logger.msg(player, Messages.getMsg("error.no-such-player").replace("{player}", args[1]));
                                 return false;
                             }
+                            KeepInventoryToggle.toggleKeepInventory(true, player, target);
+                            return true;
                         } else {
-                            if (KeepInvIndividual.mySqlEnabled) {
-                                Bukkit.getScheduler().runTaskAsynchronously(KeepInvIndividual.get(), () -> MySQLFunctions.addPlayer(player, null));
-                            } else {
-                                LocalFunctions.addPlayer(player, null);
-                                return true;
-                            }
+                            KeepInventoryToggle.toggleKeepInventory(true, player, null);
                         }
                     }
                     case "off" -> {
+                        DebugModule.info("Player called subcommand 'off'.");
                         if (args.length > 1) {
-                            DebugModule.info("Player called subcommand 'off'.");
-                            if (!checkPermission(sender, args[0])) { return false; }
+                            if (!sender.hasPermission("ki.admin.cmd.other")) {
+                                Logger.msg(player, Messages.getMsg("error.no-permission"));
+                                return false;
+                            }
                             Player target = Bukkit.getPlayerExact(args[1]);
-                            if (target != null) {
-                                if (KeepInvIndividual.mySqlEnabled) {
-                                    Bukkit.getScheduler().runTaskAsynchronously(KeepInvIndividual.get(), () -> MySQLFunctions.removePlayer(player, target));
-                                } else {
-                                    LocalFunctions.removePlayer(player, target);
-                                    return true;
-                                }
-                            } else {
+                            if (target == null) {
                                 Logger.msg(player, Messages.getMsg("error.no-such-player").replace("{player}", args[1]));
                                 return false;
                             }
+                            KeepInventoryToggle.toggleKeepInventory(false, player, target);
+                            return true;
                         } else {
-                            if (KeepInvIndividual.mySqlEnabled) {
-                                Bukkit.getScheduler().runTaskAsynchronously(KeepInvIndividual.get(), () -> MySQLFunctions.removePlayer(player, null));
-                            } else {
-                                LocalFunctions.removePlayer(player, null);
-                                return true;
-                            }
+                            KeepInventoryToggle.toggleKeepInventory(false, player, null);
                         }
                     }
 
@@ -99,7 +83,6 @@ public class CommandKeepInventory implements TabExecutor {
                         DebugModule.info("Reload finished!");
                         Logger.msg(player, Messages.getMsg("info.reload.success"));
                         return true;
-
                     }
 
                     case "list" -> {
