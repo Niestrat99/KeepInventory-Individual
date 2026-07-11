@@ -3,7 +3,7 @@ version: ${plugin_version}
 author: Niestrat99
 description: Allow individual players to keep their inventory on death without using the gamerule.
 main: io.github.niestrat99.keepinvindividual.KeepInvIndividual
-api-version: 1.20
+api-version: 26.1.2
 
 permissions:
   ki.admin.cmd.on:

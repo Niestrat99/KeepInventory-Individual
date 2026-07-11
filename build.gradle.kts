@@ -1,6 +1,5 @@
 plugins {
     id("java")
-    id("xyz.jpenilla.run-paper") version "2.2.0"
 }
 
 group = "io.github.niestrat99"
@@ -16,7 +15,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 
-    compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
     implementation("com.mysql:mysql-connector-j:8.2.0")
 }
 
@@ -25,9 +24,6 @@ tasks.getByName<Test>("test") {
 }
 
 tasks {
-    runServer {
-        minecraftVersion("1.20.2")
-    }
 
     processResources {
         inputs.property("plugin_version", project.version)
@@ -39,5 +35,5 @@ tasks {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
